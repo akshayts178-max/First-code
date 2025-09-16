@@ -11,71 +11,44 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContactBookTest {
     UUID id = UUID.randomUUID();
     @Test
-    void addContactMethodTest() {
+    void addContactMethodTest() throws InvalidInputException {
         ContactBook contactBook = new ContactBook();
         Contact c = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        try {
-            contactBook.addContact(c);
-        } catch (InvalidInputException e) {
-            throw new RuntimeException("Error: " + e);
-        }
-        assertEquals("Akshay", c.getFirstName());
-        assertEquals("TS", c.getLastName());
-        assertTrue(c.getPhones().contains("6366119928"));
+        contactBook.addContact(c);
+        List<Contact> found = contactBook.searchByName("TS");
+        assertEquals(1, found.size());
+        assertEquals("TS", found.getFirst().getLastName());
+        assertEquals("Akshay", found.getFirst().getFirstName());
     }
 
     @Test
-    void updateContactMethodTest() {
+    void updateContactMethodTest() throws InvalidInputException, DuplicateContactException {
         ContactBook contactBook = new ContactBook();
         Contact contact = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        try {
-            contactBook.addContact(contact);
-        } catch (InvalidInputException e) {
-            throw new RuntimeException("Error" + e);
-        }
-//        contacts.put(id, newContact);
+        contactBook.addContact(contact);
         Contact newContact = new Contact(id, "Akshay", "Kumar", Collections.singletonList("6366119928"));
-        try {
-            contactBook.updateContact(id, newContact);
-        } catch (InvalidInputException e) {
-            throw new RuntimeException("Error" + e);
-        } catch (DuplicateContactException e) {
-            throw new RuntimeException("Error" + e);
-        }
-        assertNotNull(newContact, "Updated contact should exist");
-        assertEquals("Akshay", newContact.getFirstName());
-        assertEquals("Kumar", newContact.getLastName());
-        assertTrue(newContact.getPhones().contains("6366119928"));
+        contactBook.updateContact(id, newContact);
+        List<Contact> found = contactBook.searchByName("Kumar");
+        assertNotNull(found, "Updated contact should exist");
+        assertEquals(1, found.size());
+        assertEquals("Akshay", found.getFirst().getFirstName());
+        assertEquals("Kumar", found.getFirst().getLastName());
     }
 
     @Test
-    void deleteContactMethodTest() {
+    void deleteContactMethodTest() throws InvalidInputException, ContactNotFoundException {
         ContactBook contactBook = new ContactBook();
         Contact contact = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        try {
-            contactBook.addContact(contact);
-        } catch (InvalidInputException e) {
-            throw new RuntimeException("Error" + e);
-        }
-        try {
-            contactBook.deleteContact(id);
-        } catch (InvalidInputException e) {
-            throw new RuntimeException("Error" + e);
-        } catch (ContactNotFoundException e) {
-            throw new RuntimeException("Error" + e);
-        }
+        contactBook.addContact(contact);
+        contactBook.deleteContact(id);
         assertTrue(contactBook.listAllContacts().isEmpty());
     }
 
     @Test
-    void listAllContactMethodTest() {
+    void listAllContactMethodTest() throws InvalidInputException {
         ContactBook contactBook = new ContactBook();
         Contact contact = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        try {
-            contactBook.addContact(contact);
-        } catch (InvalidInputException e) {
-            throw new RuntimeException("Error" + e);
-        }
+        contactBook.addContact(contact);
         List<Contact> list = contactBook.listAllContacts();
         assertNotNull(list);
     }

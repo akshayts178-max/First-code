@@ -60,4 +60,15 @@ public class ContactBook implements Serializable {
             nameIndex.computeIfAbsent(nameKey, k -> new HashSet<>()).add(contact.getId());
         }
     }
+
+    public List<Contact> searchByName(String lastName) {
+        List<Contact> results = new ArrayList<>();
+        for (Contact contact : contacts.values()) {
+            String name = contact.getLastName();
+            if (name.equalsIgnoreCase(lastName)) {
+                results.add(contact);
+            }
+        }
+        return results;
+    }
 }
