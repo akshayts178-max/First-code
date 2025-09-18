@@ -4,3 +4,4 @@ mobile\ContactBookCli.class
 mobile\DuplicateContactException.class
 mobile\InvalidInputException.class
 mobile\ContactBook.class
+mobile\ContactBookApplication.class
