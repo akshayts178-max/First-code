@@ -1,24 +1,29 @@
 package mobile;
 
+import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.util.*;
 
+@Service
 public class ContactBook implements Serializable {
 
     Map<UUID, Contact> contacts = new HashMap<>();
     Map<String, UUID> phoneIndex = new HashMap<>();
     Map<String, Set<UUID>> nameIndex = new HashMap<>();
 
-    public void addContact(Contact contact) throws InvalidInputException {
+    public ContactBook() {}
+
+    public void addContact(Contact contact, UUID id) throws InvalidInputException {
         if (contact == null) {
             throw new InvalidInputException("Contact cannot be null!");
         }
-        contacts.put(contact.getId(), contact);
+        contacts.put(contact.getId(id), contact);
         for (String phone : contact.getPhones()) {
-            phoneIndex.put(phone, contact.getId());
+            phoneIndex.put(phone, contact.getId(id));
         }
         String nameKey = (contact.getFirstName() + " " + contact.getLastName()).toLowerCase();
-        nameIndex.computeIfAbsent(nameKey, k -> new HashSet<>()).add(contact.getId());
+        nameIndex.computeIfAbsent(nameKey, k -> new HashSet<>()).add(contact.getId(id));
     }
 
     public void updateContact(UUID id, Contact newContact) throws InvalidInputException, DuplicateContactException {
@@ -29,7 +34,7 @@ public class ContactBook implements Serializable {
             throw new InvalidInputException("Contact with id " + id + " does not exist!");
         }
         contacts.put(id, newContact);
-        rebuildIndexes();
+        rebuildIndexes(id);
     }
 
     public void deleteContact(UUID id) throws InvalidInputException, ContactNotFoundException {
@@ -40,7 +45,7 @@ public class ContactBook implements Serializable {
             throw new ContactNotFoundException("Contact with the id " + id + " not found!");
         }
         contacts.remove(id);
-        rebuildIndexes();
+        rebuildIndexes(id);
     }
 
     public List<Contact> listAllContacts() {
@@ -49,15 +54,15 @@ public class ContactBook implements Serializable {
         return list;
     }
 
-    private void rebuildIndexes() {
+    private void rebuildIndexes(UUID id) {
         phoneIndex.clear();
         nameIndex.clear();
         for (Contact contact : contacts.values()) {
             for (String phone : contact.getPhones()) {
-                phoneIndex.put(phone, contact.getId());
+                phoneIndex.put(phone, contact.getId(id));
             }
             String nameKey = (contact.getFirstName() + " " + contact.getLastName()).toLowerCase();
-            nameIndex.computeIfAbsent(nameKey, k -> new HashSet<>()).add(contact.getId());
+            nameIndex.computeIfAbsent(nameKey, k -> new HashSet<>()).add(contact.getId(id));
         }
     }
 

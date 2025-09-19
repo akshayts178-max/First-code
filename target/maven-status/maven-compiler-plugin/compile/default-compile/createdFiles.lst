@@ -1,7 +1,9 @@
+mobile\repo\ContactRepository.class
 mobile\ContactNotFoundException.class
 mobile\Contact.class
 mobile\ContactBookCli.class
 mobile\DuplicateContactException.class
+mobile\controller\ContactController.class
 mobile\InvalidInputException.class
 mobile\ContactBook.class
 mobile\ContactBookApplication.class

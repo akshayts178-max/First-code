@@ -1,19 +1,31 @@
 package mobile;
 
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Entity
 public class Contact implements Serializable {
-
-    private UUID id = UUID.randomUUID();
+    @Id
+    private UUID id;
     private String firstName;
     private String lastName;
+
     private List<String> phones;
     private List<String> email;
     private Set<String> tags;
     private LocalDateTime createdAt = null;
     private LocalDateTime updatedAt;
+
+    public Contact() {
+        this.id = UUID.randomUUID();
+    }
 
     public Contact(String firstName, String lastName, List<String> phones, List<String> email, Set<String> tags) {
         this.firstName = firstName;
@@ -38,8 +50,8 @@ public class Contact implements Serializable {
     }
 
 
-    public UUID getId() {
-        return id;
+    public UUID getId(UUID id) {
+        return this.id;
     }
 
     public String getFirstName() {

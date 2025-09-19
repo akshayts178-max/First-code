@@ -14,7 +14,7 @@ class ContactBookTest {
     void addContactMethodTest() throws InvalidInputException {
         ContactBook contactBook = new ContactBook();
         Contact c = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        contactBook.addContact(c);
+        contactBook.addContact(c, id);
         List<Contact> found = contactBook.searchByName("TS");
         assertEquals(1, found.size());
         assertEquals("TS", found.getFirst().getLastName());
@@ -25,7 +25,7 @@ class ContactBookTest {
     void updateContactMethodTest() throws InvalidInputException, DuplicateContactException {
         ContactBook contactBook = new ContactBook();
         Contact contact = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        contactBook.addContact(contact);
+        contactBook.addContact(contact, id);
         Contact newContact = new Contact(id, "Akshay", "Kumar", Collections.singletonList("6366119928"));
         contactBook.updateContact(id, newContact);
         List<Contact> found = contactBook.searchByName("Kumar");
@@ -39,7 +39,7 @@ class ContactBookTest {
     void deleteContactMethodTest() throws InvalidInputException, ContactNotFoundException {
         ContactBook contactBook = new ContactBook();
         Contact contact = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        contactBook.addContact(contact);
+        contactBook.addContact(contact, id);
         contactBook.deleteContact(id);
         assertTrue(contactBook.listAllContacts().isEmpty());
     }
@@ -48,7 +48,7 @@ class ContactBookTest {
     void listAllContactMethodTest() throws InvalidInputException {
         ContactBook contactBook = new ContactBook();
         Contact contact = new Contact(id, "Akshay", "TS", Collections.singletonList("6366119928"));
-        contactBook.addContact(contact);
+        contactBook.addContact(contact, id);
         List<Contact> list = contactBook.listAllContacts();
         assertNotNull(list);
     }

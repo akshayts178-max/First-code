@@ -3,10 +3,10 @@ package mobile;
 import java.util.*;
 
 public class ContactBookCli {
-    private static Scanner sc = new Scanner(System.in);
-    private static ContactBook contactBook = new ContactBook();
+    private static final Scanner sc = new Scanner(System.in);
+    private static final ContactBook contactBook = new ContactBook();
 
-    public static void main(String[] args) {
+    public void run(String[] args) {
         while (true) {
             System.out.println("\n--- Contacts ---");
             System.out.println("1. Add Contact");
@@ -41,7 +41,7 @@ public class ContactBookCli {
         List<String> phones = Collections.singletonList(sc.nextLine());
         Contact contact = new Contact(firstName, lastName, phones, new ArrayList<>(), new HashSet<>());
         try {
-            contactBook.addContact(contact);
+            contactBook.addContact(contact, UUID.randomUUID());
             System.out.println("Contact added successfully!");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
